@@ -157,12 +157,9 @@ my_limit = 79.99
 url = "https://www.zalando.de/"
 
 # Selenium-WebDriver initialisieren
-
-
-
+options = webdriver.ChromeOptions()
 
 # Wir wollen die Webseite mit deutscher Sprache öffnen.
-options = webdriver.ChromeOptions()
 
 # Das Überschreiben der Spracheinstellungen per Kommandozeilenargument
 # funktioniert leider nicht zuverlässig, schadet aber auch nicht.
