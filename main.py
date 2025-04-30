@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -11,7 +10,6 @@ from selenium.webdriver.support.expected_conditions import (
 )
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.common.keys import Keys
-import logging
 import os
 from dotenv import load_dotenv
 import smtplib
@@ -19,41 +17,32 @@ from email.message import EmailMessage
 import ssl
 
 
-# Logging konfigurieren
-logging.basicConfig(
-    level=logging.INFO,
-    format="%(asctime)s - %(name)s - %(levelname)s - %(message)s",
-    handlers=[logging.FileHandler("scraper.log"), logging.StreamHandler()],
-)
-
-logger = logging.getLogger("scraper")
-
-
+# Funktionen 
 def open_website(url: str):
-    logger.info(f"Öffnen der Webseite {url}")
+    print(f"Öffnen der Webseite {url}")
     try:
         driver.get(url)
     except Exception as e:
-        logger.error(f"Fehler beim Öffnen: {e}")
+        print(f"Fehler beim Öffnen: {e}")
         close_driver()
         raise
 
 
 def close_driver():
-    logger.info("Beenden des Browser-Treibers ...")
+    print("Beenden des Browser-Treibers ...")
     driver.quit()
 
 
 def accept_cookies():
     try:
-        logger.info("Auf das Cookie-Banner warten ...")
+        print("Auf das Cookie-Banner warten ...")
         # Das Cookie-Banner ist ein Shadow-DOM-Element mit der ID "usercentrics-root"
         host = WebDriverWait(driver, 10).until(
             presence_of_element_located((By.ID, "usercentrics-root"))
         )
         root = host.shadow_root
 
-        logger.info(
+        print(
             "Prüfen, ob der Einwilligungsknopf vorhanden und anklickbar ist ..."
         )
 
@@ -75,7 +64,7 @@ def accept_cookies():
         consent_button = WebDriverWait(driver, 10).until(consent_button_clickable)
         consent_button.click()
     except Exception as e:
-        logger.error(f"Fehler beim Annehmen der Cookies: {e}")
+        print(f"Fehler beim Annehmen der Cookies: {e}")
 
 def search_product(product_name: str):
     try:
@@ -163,13 +152,18 @@ load_dotenv()
 # Eigenschaften des heißbegehrten Produkts festlegen
 product = "Asics Japan S"
 product_name = "JAPAN S - Sneaker low - black"
-size = "45"
-my_limit = 79.99
+size = "44"
+my_limit = 79.99 
 url = "https://www.zalando.de/"
 
 # Selenium-WebDriver initialisieren
-options = webdriver.ChromeOptions()
+
+
+
+
 # Wir wollen die Webseite mit deutscher Sprache öffnen.
+options = webdriver.ChromeOptions()
+
 # Das Überschreiben der Spracheinstellungen per Kommandozeilenargument
 # funktioniert leider nicht zuverlässig, schadet aber auch nicht.
 options.add_argument("--lang=de")
