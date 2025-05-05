@@ -17,7 +17,7 @@ passwort="doan beispiel axi etwa"
 absender="hommingbergergepardenforelle@gmail.com"
 empfaenger="donald@entenhausen.de"
 smtp_port=465
-smtp_server="gmail.smtp.com"
+smtp_server="smtp.gmail.com"
 ```
 
 Das Skript abspielen:

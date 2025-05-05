@@ -1,6 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-
+from config import product, product_name, size, my_limit
+from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
 from selenium.common.exceptions import NoSuchElementException
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
@@ -9,6 +11,7 @@ from selenium.webdriver.support.expected_conditions import (
     element_to_be_clickable,
 )
 from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 import os
 from dotenv import load_dotenv
@@ -40,7 +43,6 @@ def accept_cookies():
         host = WebDriverWait(driver, 10).until(
             presence_of_element_located((By.ID, "usercentrics-root"))
         )
-        root = host.shadow_root
 
         print(
             "Prüfen, ob der Einwilligungsknopf vorhanden und anklickbar ist ..."
@@ -50,16 +52,13 @@ def accept_cookies():
         # Sie prüft, ob der Button im Shadow DOM vorhanden und anklickbar ist.
         # WebDriverWait.until() verwendet sie, um sicherzustellen, dass der Button
         # vorhanden ist, bevor darauf geklickt wird.
-        def consent_button_clickable(_driver) -> bool | WebElement:
-            try:
-                element = root.find_element(By.CSS_SELECTOR, "[data-testid='uc-accept-all-button']")
+        def consent_button_clickable(_driver):
+                element = host.shadow_root.find_element(By.CSS_SELECTOR, "[data-testid='uc-accept-all-button']")
                 return (
                     element
                     if element.is_displayed() and element.is_enabled()
                     else False
                 )
-            except NoSuchElementException:
-                return False
 
         consent_button = WebDriverWait(driver, 10).until(consent_button_clickable)
         consent_button.click()
@@ -68,7 +67,10 @@ def accept_cookies():
 
 def search_product(product_name: str):
     try:
-        search_box = driver.find_element(By.ID, "header-search-input")
+        print("Auf das Suchfeld warten ...")
+        search_box = WebDriverWait(driver, 10).until(
+                presence_of_element_located((By.ID, "header-search-input"))
+        )
         search_box.click()
         search_box.send_keys(product_name)
         search_box.send_keys(Keys.ENTER)
@@ -78,6 +80,7 @@ def search_product(product_name: str):
 
 def select_product(product_name: str):
     try:
+        print("Auf die Produktversion warten ...")
         product_element = WebDriverWait(driver, 10).until(
             presence_of_element_located((By.XPATH, f"//h3[text()='{product_name}']"))
         )
@@ -97,8 +100,9 @@ def select_product_size(size: str | int) -> bool:
         )
         size_element.click()
         print(f"Produktgröße '{size}' erfolgreich ausgewählt.")
-        ancestor = driver.find_element(
-            By.XPATH, f"//span[text()='{size}']/ancestor::div[@data-is-selected]"
+        print("Auf Element für die Verfügbarkeit warten ...")
+        ancestor = WebDriverWait(driver, 10).until(
+                presence_of_element_located((By.XPATH, f"//span[text()='{size}']/ancestor::div[@data-is-selected]"))
         )
         return ancestor.get_attribute("data-is-selected") == "true"
     except Exception as e:
@@ -109,8 +113,8 @@ def select_product_size(size: str | int) -> bool:
 def get_price() -> float | None:
     try:
         print("Produktpreis ermitteln ...")
-        price_element = driver.find_element(
-            By.CSS_SELECTOR, "[data-testid='pdp-price-container'] p span"
+        price_element = WebDriverWait(driver, 10).until(
+                presence_of_element_located((By.CSS_SELECTOR, "[data-testid='pdp-price-container'] p span"))
         )
         price = price_element.text
         # Euro-Zeichen entfernen und Komma in Punkt umwandeln,
@@ -147,18 +151,19 @@ def send_email(subject: str, body: str) -> None:
         print(f"Fehler beim Senden der E-Mail: {e}")
 
 
+# Die .env-Datei laden, die die E-Mail-Konfiguration und die Suchparameter für den gewünschten Schuh enthält
 load_dotenv()
 
-# Eigenschaften des heißbegehrten Produkts festlegen
-product = "Asics Japan S"
-product_name = "JAPAN S - Sneaker low - black"
-size = "44"
-my_limit = 79.99 
+# URL zu Zalando festlegen
 url = "https://www.zalando.de/"
 
 # Selenium-WebDriver initialisieren
-options = webdriver.ChromeOptions()
-
+options = Options()
+## Setup chrome options for WSL2
+# Set path to chromedriver as per your configuration
+homedir = os.path.expanduser("~/programming/squishyscraper")
+options.binary_location = f"{homedir}/chrome-linux64/chrome"
+webdriver_service = Service(f"{homedir}/chromedriver-linux64/chromedriver")
 # Wir wollen die Webseite mit deutscher Sprache öffnen.
 
 # Das Überschreiben der Spracheinstellungen per Kommandozeilenargument
@@ -170,6 +175,8 @@ options.add_argument("--accept-languages=de")
 options.add_experimental_option("prefs", {"intl.accept_languages": "de,de_DE"})
 driver = webdriver.Chrome(options=options)
 
+# Webdriver ausführen
+# Die folgenden Variablen sind in der .config-Datei gespeichert
 open_website(url)
 accept_cookies()
 search_product(product)
