@@ -114,7 +114,7 @@ def get_price() -> float | None:
     try:
         print("Produktpreis ermitteln ...")
         price_element = WebDriverWait(driver, 10).until(
-                presence_of_element_located((By.CSS_SELECTOR, "[data-testid='pdp-price-container'] p span"))
+                presence_of_element_located((By.CSS_SELECTOR, "[data-testid='pdp-price-container'] span"))
         )
         price = price_element.text
         # Euro-Zeichen entfernen und Komma in Punkt umwandeln,

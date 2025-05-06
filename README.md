@@ -2,16 +2,13 @@
 Dank geht an ola@heise.de für die modulare Aufteilung des Codes in Funktionen und der Korrektur.
 
 # Installation
-Python venv aufsetzen:
+Python venv aufsetzen und Skript starten.
 ```
-python -m venv env
+pipenv install
 
-source env/bin/activate
-
-pipenv install -r requirements.txt
 ```
 
-Chrome installieren. Danach die .env-Datei aufsetzen. Einen Gmail-Account erstellen und dessen Daten in die .env setzen:
+Das Skript benötigt eine .env-Datei, die so strukturiert ist:
 ```
 passwort="doan beispiel axi etwa"
 absender="hommingbergergepardenforelle@gmail.com"
@@ -19,10 +16,12 @@ empfaenger="donald@entenhausen.de"
 smtp_port=465
 smtp_server="smtp.gmail.com"
 ```
+In config.py geben Sie die Variablen Ihres gewünschten Schuhs an.
+Standardgemäß ist das der Asics Japan S black.
 
-Das Skript abspielen:
+Das Skript startet nach:
 ```
-python main.py
+pipenv run python main.py
 
 ```
 Stand: Mai 2025
