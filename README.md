@@ -18,7 +18,7 @@ smtp_server="smtp.gmail.com"
 In config.py geben Sie die Variablen Ihres gewünschten Schuhs an.
 Standardgemäß ist das der Asics Japan S black.
 
-Das Skript startet nach:
+Das Skript setzt auf Chrome. Es startet nach:
 ```
 pipenv run python main.py
 ```
