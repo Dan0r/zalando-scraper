@@ -5,7 +5,6 @@ Dank geht an ola@heise.de für die modulare Aufteilung des Codes in Funktionen u
 Python venv aufsetzen und Skript starten.
 ```
 pipenv install
-
 ```
 
 Das Skript benötigt eine .env-Datei, die so strukturiert ist:
@@ -22,6 +21,5 @@ Standardgemäß ist das der Asics Japan S black.
 Das Skript startet nach:
 ```
 pipenv run python main.py
-
 ```
 Stand: Mai 2025
