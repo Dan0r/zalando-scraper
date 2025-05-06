@@ -1,2 +1,0 @@
-selenium==4.30.0
-dotenv==0.9.9

@@ -92,11 +92,11 @@ def select_product(product_name: str):
 def select_product_size(size: str | int) -> bool:
     try:
         size_menu = WebDriverWait(driver, 10).until(
-            element_to_be_clickable((By.ID, "picker-trigger"))
+            presence_of_element_located((By.ID, "picker-trigger"))
         )
         size_menu.click()
         size_element = WebDriverWait(driver, 10).until(
-            element_to_be_clickable((By.XPATH, f"//span[text()='{size}']"))
+            presence_of_element_located((By.XPATH, f"//span[text()='{size}']"))
         )
         size_element.click()
         print(f"Produktgröße '{size}' erfolgreich ausgewählt.")
