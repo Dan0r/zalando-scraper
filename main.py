@@ -19,6 +19,10 @@ import smtplib
 from email.message import EmailMessage
 import ssl
 
+# Cronjob: Zusätzliche Bibliothek, um das Skript ohne GUI auszuführen
+# from pyvirtualdisplay import Display
+
+
 
 # Funktionen 
 def open_website(url: str):
@@ -154,15 +158,19 @@ def send_email(subject: str, body: str) -> None:
 # Die .env-Datei laden, die die E-Mail-Konfiguration und die Suchparameter für den gewünschten Schuh enthält
 load_dotenv()
 
+# Cronjob Zusatz
+# display = Display(visible=0, size=(1024,768))
+# display.start()
+
 # URL zu Zalando festlegen
 url = "https://www.zalando.de/"
 
 # Selenium-WebDriver initialisieren
 options = Options()
 ## Setup chrome options für WSL2
-# homedir = os.path.expanduser("~/programming/squishyscraper")
-# options.binary_location = f"{homedir}/chrome-linux64/chrome"
-# webdriver_service = Service(f"{homedir}/chromedriver-linux64/chromedriver")
+homedir = os.path.expanduser("~/programming/squishyscraper")
+options.binary_location = f"{homedir}/chrome-linux64/chrome"
+webdriver_service = Service(f"{homedir}/chromedriver-linux64/chromedriver")
 
 
 # Wir wollen die Webseite mit deutscher Sprache öffnen.
@@ -174,6 +182,7 @@ options.add_argument("--accept-languages=de")
 # Den größten Erfolg verheißt, die Einstellungen des Browsers zu ändern,
 # entweder auf "de" oder auf "de_DE".
 options.add_experimental_option("prefs", {"intl.accept_languages": "de,de_DE"})
+
 driver = webdriver.Chrome(options=options)
 
 # Webdriver ausführen
@@ -207,3 +216,5 @@ else:
     else:
         print("Produktpreis konnte nicht ermittelt werden.")
 close_driver()
+# Cronjob Zusatz:
+#display.stop()
