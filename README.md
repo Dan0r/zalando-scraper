@@ -1,5 +1,4 @@
 # Zalando Scraper 👟 
-Dank geht an ola@heise.de für die modulare Aufteilung des Codes in Funktionen und der Korrektur.
 
 # Installation
 Python venv aufsetzen und Skript starten.
@@ -24,10 +23,13 @@ pipenv run python main.py
 ```
 
 # Automatisierung unter Linux
-Ein cronjob automatisiert das Skript unter Linux. Sie erstellen ein
-Shellskript namens cron_main.sh. Das lässt sich im Terminal
-ausführbar machen mit chmod +x cron_main.sh. Weil ein cronjob in einer minimalen Anwendungsumgebung läuft, kann es das GUI von Chrome nicht öffnen. Das lässt sich mit der Bibliothek pythonvirtualdisplay lösen, die das GUI simuliert. Sie installieren diese mit pipenv install pyvirtualdisplay, und in main.py kommentieren Sie folgenden Code aus:
+Ein cronjob automatisiert das Skript unter Linux. Das chron_main.sh lässt sich ausfühbar machen:
 
+```
+chmod +x chron_main.sh
+```
+
+Danach vergewissern, dass pyvirtualdesktop installiert ist und folgenden Code in main.py auskommentieren:
 
 ```
 from pyvirtualdisplay import Display
@@ -41,8 +43,12 @@ display.start()
 display.stop()
 ```
 
-Danach stellen Sie die Automatisierung ein: crontab -e. Um es jede Minte auszuführen:
+Danach stellen Sie die Automatisierung ein:
+```
+crontab -e
+```
 
+Um es jede Minte auszführen zu lassen:
 ```
 * * * * * /bin/bash /home/szo/zalando-scraper/cron_main.sh 
 ```
