@@ -22,4 +22,29 @@ Das Skript setzt auf Chrome. Es startet nach:
 ```
 pipenv run python main.py
 ```
+
+# Automatisierung unter Linux
+Ein cronjob automatisiert das Skript unter Linux. Sie erstellen ein
+Shellskript namens cron_main.sh. Das lässt sich im Terminal
+ausführbar machen mit chmod +x cron_main.sh. Weil ein cronjob in einer minimalen Anwendungsumgebung läuft, kann es das GUI von Chrome nicht öffnen. Das lässt sich mit der Bibliothek pythonvirtualdisplay lösen, die das GUI simuliert. Sie installieren diese mit pipenv install pyvirtualdisplay, und in main.py kommentieren Sie folgenden Code aus:
+
+
+```
+from pyvirtualdisplay import Display
+
+display = Display(visible=0, size=(1024,768))
+
+# Das virtuelle Display öffnen
+display.start()
+
+# Am Ende des Skripts das virtuelle Display schließen
+display.stop()
+```
+
+Danach stellen Sie die Automatisierung ein: crontab -e. Um es jede Minte auszuführen:
+
+```
+* * * * * /bin/bash /home/szo/zalando-scraper/cron_main.sh 
+```
+
 Stand: Mai 2025
