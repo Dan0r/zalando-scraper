@@ -168,9 +168,9 @@ url = "https://www.zalando.de/"
 # Selenium-WebDriver initialisieren
 options = Options()
 ## Setup chrome options für WSL2
-homedir = os.path.expanduser("~/programming/squishyscraper")
-options.binary_location = f"{homedir}/chrome-linux64/chrome"
-webdriver_service = Service(f"{homedir}/chromedriver-linux64/chromedriver")
+# homedir = os.path.expanduser("~/programming/squishyscraper")
+# options.binary_location = f"{homedir}/chrome-linux64/chrome"
+# webdriver_service = Service(f"{homedir}/chromedriver-linux64/chromedriver")
 
 
 # Wir wollen die Webseite mit deutscher Sprache öffnen.
