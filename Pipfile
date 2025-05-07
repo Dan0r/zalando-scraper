@@ -6,7 +6,6 @@ name = "pypi"
 [packages]
 python-dotenv = "*"
 selenium = "*"
-pyvirtualdesktop = "*"
 
 [dev-packages]
 

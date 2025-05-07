@@ -1,8 +1,15 @@
 # Zalando Scraper 👟 
 
+Repository klonen:
+```
+git clone https://github.com/Dan0r/zalando-scraper.git
+
+```
+
 # Installation
 Python venv aufsetzen und Skript starten.
 ```
+cd zalando-scraper
 pipenv install
 ```
 
